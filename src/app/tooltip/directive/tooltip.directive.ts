@@ -19,6 +19,13 @@ export class TooltipDirective {
 
   private tooltipComponent?: ComponentRef<any>;
 
+  constructor(
+    public viewContainerRef: ViewContainerRef,
+    private elementRef: ElementRef,
+    private appRef: ApplicationRef,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
+
   @HostListener('mouseenter')
   onMouseEnter(): void {
     console.log('onMouseEnter');
@@ -54,11 +61,4 @@ export class TooltipDirective {
     this.tooltipComponent.setInput('left', (right - left) / 2 + left);
     this.tooltipComponent.setInput('top', bottom);
   }
-
-  constructor(
-    public viewContainerRef: ViewContainerRef,
-    private elementRef: ElementRef,
-    private appRef: ApplicationRef,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
 }

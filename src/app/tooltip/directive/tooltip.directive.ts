@@ -1,13 +1,11 @@
 import { DOCUMENT } from '@angular/common';
 import {
   ApplicationRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
   HostListener,
   Inject,
-  Injector,
   Input,
   ViewContainerRef,
 } from '@angular/core';
@@ -28,10 +26,7 @@ export class TooltipDirective {
       return;
     }
 
-    const tooltipComponentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      TooltipComponent
-    );
-    this.tooltipComponent = tooltipComponentFactory.create(this.injector);
+    this.tooltipComponent = this.viewContainerRef.createComponent(TooltipComponent);
     this.document.body.appendChild(
       this.tooltipComponent.location.nativeElement
     );
@@ -54,20 +49,14 @@ export class TooltipDirective {
     if (!this.tooltipComponent) {
       return;
     }
-    this.tooltipComponent.instance.text = this.tooltipText;
-    const {
-      left,
-      right,
-      bottom,
-    } = this.elementRef.nativeElement.getBoundingClientRect();
-    this.tooltipComponent.instance.left = (right - left) / 2 + left;
-    this.tooltipComponent.instance.top = bottom;
+    this.tooltipComponent.setInput('text', this.tooltipText);
+    const { left, right, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
+    this.tooltipComponent.setInput('left', (right - left) / 2 + left);
+    this.tooltipComponent.setInput('top', bottom);
   }
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    // public viewContainerRef: ViewContainerRef,
-    private injector: Injector,
+    public viewContainerRef: ViewContainerRef,
     private elementRef: ElementRef,
     private appRef: ApplicationRef,
     @Inject(DOCUMENT) private document: Document

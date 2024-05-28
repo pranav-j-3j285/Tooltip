@@ -15,7 +15,7 @@ import { TooltipComponent } from '../components/tooltip/tooltip.component';
   selector: '[tooltip]',
 })
 export class TooltipDirective {
-  @Input() tooltipText = '';
+  @Input() tooltip = '';
 
   private tooltipComponent?: ComponentRef<any>;
 
@@ -56,7 +56,7 @@ export class TooltipDirective {
     if (!this.tooltipComponent) {
       return;
     }
-    this.tooltipComponent.setInput('text', this.tooltipText);
+    this.tooltipComponent.setInput('text', this.tooltip);
     const { left, right, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
     this.tooltipComponent.setInput('left', (right - left) / 2 + left);
     this.tooltipComponent.setInput('top', bottom);
